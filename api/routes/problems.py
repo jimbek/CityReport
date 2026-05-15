@@ -1,17 +1,47 @@
 # Δηλώνουμε τα routes για τα προβλήματα
+import datetime
+import uuid
+
 from flask import request
 
 from models.problem import Problem
+from repos.problems import ProblemsRepository
+
+problems_repo = ProblemsRepository()
 
 def get_problems():
     categoryId = request.args.get('categoryId')
     stateId = request.args.get('stateId')
     sortBy = request.args.get('sortBy')
 
-    return [ Problem(1, categoryId, stateId, "Title", "Description", 0.0, 0.0, "2024-01-01", "2024-01-01").to_dict() ], 200
+    if categoryId is not None:
+        try:
+            categoryId = int(categoryId)
+        except ValueError:
+            return "categoryId must be an integer", 400
+    else:
+        categoryId = 0
+    
+    if stateId is not None:
+        try:
+            stateId = int(stateId)
+        except ValueError:
+            return "stateId must be an integer", 400
+    else:
+        stateId = 0
+    
+    if sortBy is not None and sortBy not in ['createdAt', 'updatedAt']:
+        sortBy = None
 
-def get_problem(id):
-    return Problem(id, 1, 1, "Title", "Description", 0.0, 0.0, "2024-01-01", "2024-01-01").to_dict(), 200
+    return problems_repo.get_all_problems(categoryId, stateId, sortBy), 200
+
+def get_problem(id : str):
+    problem = problems_repo.get_problem_by_id(id)
+
+    if problem is None:
+        return "Problem not found", 404
+    
+    return problem, 200
 
 def create_problem():
     data = request.get_json()
@@ -21,28 +51,30 @@ def create_problem():
     
     if not data.get("categoryId") or not data.get("title") or not data.get("description") or not data.get("latitude") or not data.get("longitude"):
         return "Missing parameters", 400
-    
-    problem = Problem(
-        id=0,  # This will be set by the database
-        categoryId=data["categoryId"],
-        stateId=1,  # Default state (e.g., "New")
-        title=data["title"],
-        description=data["description"],
-        latitude=data["latitude"],
-        longitude=data["longitude"],
-        createdAt="2024-01-01",  # This should be set to the current date/time
-        updatedAt="2024-01-01"   # This should be set to the current date/time
-    )
 
-    return problem.id, 201
+    data['id'] = str(uuid.uuid4())
+    data['stateId'] = 1
+    data['createdAt'] = data['updatedAt'] = datetime.datetime.now().isoformat()
 
-def update_problem(id):
+    return problems_repo.add_problem(data), 201
+
+def update_problem(id: str):
     data = request.get_json()
 
     if data is None:
         return "Body is missing", 400
     
-    # Here you would typically fetch the existing problem from the database,
-    # update its fields with the new data, and save it back to the database.
+    found = problems_repo.update_problem(id, data)
+
+    if not found:
+        return "Problem not found", 404
+
+    return id, 200
+
+def delete_problem(id: str):
+    found = problems_repo.delete_problem(id)
+
+    if not found:
+        return "Problem not found", 404
 
     return id, 200
