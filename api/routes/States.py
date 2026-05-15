@@ -6,6 +6,8 @@ from flask import request
 from repos.States import StatesRepository
 
 repo = StatesRepository()
+repo.apply_migrations()
+repo.seed_db()
 
 def get_states():
     return repo.get_all_states(), 200

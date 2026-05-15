@@ -15,6 +15,14 @@ class StatesRepository(BaseRepository):
             )
         ''')
     
+    def seed_db(self):
+        super().seed_db('''
+            INSERT OR IGNORE INTO states (id, label) VALUES ("31625a2a-a9a3-41a9-9412-c5705341e060", "Νέο");
+            INSERT OR IGNORE INTO states (id, label) VALUES ("31625a2a-a9a3-41a9-9412-c5705341e061", "Υπό επεξεργασία");
+            INSERT OR IGNORE INTO states (id, label) VALUES ("31625a2a-a9a3-41a9-9412-c5705341e062", "Απορριφθέν");
+            INSERT OR IGNORE INTO states (id, label) VALUES ("31625a2a-a9a3-41a9-9412-c5705341e063", "Ολοκληρωμένο");
+        ''')
+    
     def get_all_states(self):
         data = self.sql_get_all('SELECT * FROM states')
 

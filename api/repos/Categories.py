@@ -14,6 +14,15 @@ class CategoriesRepository(BaseRepository):
             )
         ''')
     
+    def seed_db(self):
+        super().seed_db('''
+            INSERT OR IGNORE INTO categories (id, label) VALUES ("31625a2a-a9a3-41a9-9412-c5705341e070", "Καθαριότητα");
+            INSERT OR IGNORE INTO categories (id, label) VALUES ("31625a2a-a9a3-41a9-9412-c5705341e071", "Φωτισμός");
+            INSERT OR IGNORE INTO categories (id, label) VALUES ("31625a2a-a9a3-41a9-9412-c5705341e072", "Βλάβες");
+            INSERT OR IGNORE INTO categories (id, label) VALUES ("31625a2a-a9a3-41a9-9412-c5705341e073", "Απορρίμματα");
+            INSERT OR IGNORE INTO categories (id, label) VALUES ("31625a2a-a9a3-41a9-9412-c5705341e074", "Παράνομη στάθμευση");
+        ''')
+    
     def get_all_categories(self):
         data = self.sql_get_all('SELECT * FROM categories')
 

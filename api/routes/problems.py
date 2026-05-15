@@ -8,6 +8,8 @@ from models.Problem import Problem
 from repos.Problems import ProblemsRepository
 
 repo = ProblemsRepository()
+repo.apply_migrations()
+repo.seed_db()
 
 def get_problems():
     categoryId = request.args.get('categoryId')

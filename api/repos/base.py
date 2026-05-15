@@ -3,13 +3,19 @@ import sqlite3
 
 class BaseRepository:
     def __init__(self):
-        self.apply_migrations()
+        pass
+    
+    def apply_migrations(self, command: str):
+        self.sql_command(command)
+    
+    def seed_db(self, command: str):
+        commands = command.split(';')
+
+        for command in commands:
+            self.sql_command(command)
 
     def __get_connection__(self):
         return sqlite3.connect('database.db')
-
-    def apply_migrations(self, command: str):
-        self.sql_command(command)
 
     def sql_command(self, command: str):
         connection = self.__get_connection__()

@@ -7,6 +7,8 @@ from repos.Categories import CategoriesRepository
 
 
 repo = CategoriesRepository()
+repo.apply_migrations()
+repo.seed_db()
 
 def get_categories():
     return repo.get_all_categories(), 200
