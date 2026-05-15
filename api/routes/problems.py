@@ -4,8 +4,8 @@ import uuid
 
 from flask import request
 
-from models.problem import Problem
-from repos.problems import ProblemsRepository
+from models.Problem import Problem
+from repos.Problems import ProblemsRepository
 
 repo = ProblemsRepository()
 

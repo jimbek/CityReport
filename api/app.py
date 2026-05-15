@@ -2,7 +2,7 @@
 from flask import Flask
 
 from routes.Categories import create_category, delete_category, get_categories, get_category, update_category
-from routes.problems import create_problem, delete_problem, get_problem, get_problems, update_problem
+from routes.Problems import create_problem, delete_problem, get_problem, get_problems, update_problem
 
 app = Flask(__name__)
 

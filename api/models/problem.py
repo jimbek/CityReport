@@ -10,9 +10,6 @@ class Problem:
         self.longitude = longitude
         self.createdAt = createdAt
         self.updatedAt = updatedAt
-    
-    def __str__(self):
-        return f'Problem(id={self.id}, categoryId={self.categoryId}, stateId={self.stateId}, title={self.title}, description={self.description}, latitude={self.latitude}, longitude={self.longitude}, createdAt={self.createdAt}, updatedAt={self.updatedAt})'
 
     def to_dict(self):
         return {
@@ -54,7 +51,5 @@ class Problem:
             createdAt = data['createdAt'],
             updatedAt = data['updatedAt']
         )
-
-        problem.id = data['id']
 
         return problem

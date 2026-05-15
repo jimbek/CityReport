@@ -2,7 +2,7 @@
 import datetime
 
 from repos.base import BaseRepository
-from models.problem import Problem
+from models.Problem import Problem
 
 class ProblemsRepository(BaseRepository):
     def __init__(self):
