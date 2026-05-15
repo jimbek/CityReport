@@ -7,7 +7,7 @@ from flask import request
 from models.problem import Problem
 from repos.problems import ProblemsRepository
 
-problems_repo = ProblemsRepository()
+repo = ProblemsRepository()
 
 def get_problems():
     categoryId = request.args.get('categoryId')
@@ -33,10 +33,10 @@ def get_problems():
     if sortBy is not None and sortBy not in ['createdAt', 'updatedAt']:
         sortBy = None
 
-    return problems_repo.get_all_problems(categoryId, stateId, sortBy), 200
+    return repo.get_all_problems(categoryId, stateId, sortBy), 200
 
 def get_problem(id : str):
-    problem = problems_repo.get_problem_by_id(id)
+    problem = repo.get_problem_by_id(id)
 
     if problem is None:
         return "Problem not found", 404
@@ -56,7 +56,7 @@ def create_problem():
     data['stateId'] = 1
     data['createdAt'] = data['updatedAt'] = datetime.datetime.now().isoformat()
 
-    return problems_repo.add_problem(data), 201
+    return repo.add_problem(data), 201
 
 def update_problem(id: str):
     data = request.get_json()
@@ -64,7 +64,7 @@ def update_problem(id: str):
     if data is None:
         return "Body is missing", 400
     
-    found = problems_repo.update_problem(id, data)
+    found = repo.update_problem(id, data)
 
     if not found:
         return "Problem not found", 404
@@ -72,7 +72,7 @@ def update_problem(id: str):
     return id, 200
 
 def delete_problem(id: str):
-    found = problems_repo.delete_problem(id)
+    found = repo.delete_problem(id)
 
     if not found:
         return "Problem not found", 404
