@@ -10,6 +10,16 @@ class State:
             "label": self.label
         }
 
-    def from_dict(self, data):
-        self.id = data.get("id", self.id)
-        self.label = data.get("label", self.label)
+    @staticmethod
+    def from_tuple(data: tuple):
+        return State(
+            id = data[0],
+            label = data[1]
+        )
+
+    @staticmethod
+    def from_dict(data: dict):
+        return State(
+            id = data.get("id", 0),
+            label = data.get("label", "")
+        )
