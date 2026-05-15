@@ -38,12 +38,7 @@ class ProblemsRepository(BaseRepository):
         if sortBy is not None:
             query += f' ORDER BY {sortBy}'
 
-        connection = self.get_connection()
-        cursor = connection.cursor()
-        cursor.execute(query)
-
-        data = cursor.fetchall()
-        connection.close()
+        data = self.sql_get_all(query)
         
         problems = [Problem.from_tuple(row).to_dict() for row in data]
 
@@ -52,12 +47,7 @@ class ProblemsRepository(BaseRepository):
     def get_problem_by_id(self, id: str):
         query = f'SELECT * FROM problems WHERE id = "{id}"'
 
-        connection = self.get_connection()
-        cursor = connection.cursor()
-        cursor.execute(query)
-        
-        data = cursor.fetchone()
-        connection.close()
+        data = self.sql_get_one(query)
 
         problem = Problem.from_tuple(data) if data is not None else None
         problem = problem.to_dict() if problem is not None else None
@@ -66,13 +56,9 @@ class ProblemsRepository(BaseRepository):
 
     def add_problem(self, data: dict):
         problem = Problem.from_dict(data)
-        
-        connection = self.get_connection()
-        cursor = connection.cursor()
-        cursor.executescript(f'INSERT INTO problems (id, categoryId, stateId, title, description, latitude, longitude, createdAt, updatedAt) VALUES ("{problem.id}", {problem.categoryId}, {problem.stateId}, "{problem.title}", "{problem.description}", {problem.latitude}, {problem.longitude}, "{problem.createdAt}", "{problem.updatedAt}")')
-        connection.commit()
-        connection.close()
 
+        self.sql_command(f'INSERT INTO problems (id, categoryId, stateId, title, description, latitude, longitude, createdAt, updatedAt) VALUES ("{problem.id}", {problem.categoryId}, {problem.stateId}, "{problem.title}", "{problem.description}", {problem.latitude}, {problem.longitude}, "{problem.createdAt}", "{problem.updatedAt}")')
+        
         return problem.id
     
     def update_problem(self, id: str, data: dict):
@@ -83,7 +69,9 @@ class ProblemsRepository(BaseRepository):
         
         data['id'] = id
         data['createdAt'] = problem_in_db['createdAt']
+
         data['updatedAt'] = datetime.datetime.now().isoformat()
+
         data['categoryId'] = data.get('categoryId', problem_in_db['categoryId'])
         data['stateId'] = data.get('stateId', problem_in_db['stateId'])
         data['title'] = data.get('title', problem_in_db['title'])
@@ -94,11 +82,7 @@ class ProblemsRepository(BaseRepository):
         problem = Problem.from_dict(data)
         query = f'UPDATE problems SET categoryId = {problem.categoryId}, stateId = {problem.stateId}, title = "{problem.title}", description = "{problem.description}", latitude = {problem.latitude}, longitude = {problem.longitude}, updatedAt = "{problem.updatedAt}" WHERE id = "{id}"'
 
-        connection = self.get_connection()
-        cursor = connection.cursor()
-        cursor.execute(query)
-        connection.commit()
-        connection.close()
+        self.sql_command(query)
 
         return id
     
@@ -108,10 +92,6 @@ class ProblemsRepository(BaseRepository):
         if problem_in_db is None:
             return False
 
-        connection = self.get_connection()
-        cursor = connection.cursor()
-        cursor.execute(f'DELETE FROM problems WHERE id = "{id}"')
-        connection.commit()
-        connection.close()
+        self.sql_command(f'DELETE FROM problems WHERE id = "{id}"')
 
         return True
