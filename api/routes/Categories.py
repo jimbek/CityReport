@@ -3,7 +3,7 @@ import uuid
 
 from flask import request
 
-from repos.Categories import CategoriesRepository
+from repos.CategoriesRepository import CategoriesRepository
 
 
 repo = CategoriesRepository()

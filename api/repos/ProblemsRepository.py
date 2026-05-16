@@ -1,7 +1,7 @@
 # Υλοποιεί το repository για τα προβλήματα
 import datetime
 
-from repos.base import BaseRepository
+from repos.BaseRepository import BaseRepository
 from models.Problem import Problem
 
 class ProblemsRepository(BaseRepository):

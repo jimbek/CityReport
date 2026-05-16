@@ -4,8 +4,7 @@ import uuid
 
 from flask import request
 
-from models.Problem import Problem
-from repos.Problems import ProblemsRepository
+from repos.ProblemsRepository import ProblemsRepository
 
 repo = ProblemsRepository()
 repo.apply_migrations()
