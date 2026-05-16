@@ -1,6 +1,7 @@
 # Εκκινεί την εφαρμογή
 from flask import Flask
 
+from routes.Comments import create_comment, get_comments
 from routes.States import create_state, delete_state, get_state, get_states, update_state
 from routes.Categories import create_category, delete_category, get_categories, get_category, update_category
 from routes.Problems import create_problem, delete_problem, get_problem, get_problems, update_problem
@@ -28,6 +29,8 @@ app.add_url_rule('/problems/<string:id>', methods = ['GET'], view_func = get_pro
 app.add_url_rule('/problems', methods = ['POST'], view_func = create_problem)
 app.add_url_rule('/problems/<string:id>', methods = ['PUT'], view_func = update_problem)
 app.add_url_rule('/problems/<string:id>', methods = ['DELETE'], view_func = delete_problem)
+app.add_url_rule('/problems/<string:problemId>/comments', methods = ['GET'], view_func = get_comments)
+app.add_url_rule('/problems/<string:problemId>/comments', methods = ['POST'], view_func = create_comment)
 
 if __name__ == '__main__':
     app.run(debug=False)

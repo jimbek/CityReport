@@ -20,8 +20,8 @@ class ProblemsRepository(BaseRepository):
                 longitude REAL,
                 createdAt TEXT,
                 updatedAt TEXT,
-                FOREIGN KEY (categoryId) REFERENCES Categories(id),
-                FOREIGN KEY (stateId) REFERENCES States(id)
+                FOREIGN KEY (categoryId) REFERENCES categories(id),
+                FOREIGN KEY (stateId) REFERENCES states(id)
             )
         ''')
 

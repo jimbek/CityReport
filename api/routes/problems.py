@@ -15,24 +15,8 @@ def get_problems():
     stateId = request.args.get('stateId')
     sortBy = request.args.get('sortBy')
 
-    if categoryId is not None:
-        try:
-            categoryId = int(categoryId)
-        except ValueError:
-            return "categoryId must be an integer", 400
-    else:
-        categoryId = 0
-    
-    if stateId is not None:
-        try:
-            stateId = int(stateId)
-        except ValueError:
-            return "stateId must be an integer", 400
-    else:
-        stateId = 0
-    
     if sortBy is not None and sortBy not in ['createdAt', 'updatedAt']:
-        sortBy = None
+        return "Invalid sortBy value, it can take 'createdAt' or 'updatedAt'", 400
 
     return repo.get_all_problems(categoryId, stateId, sortBy), 200
 
