@@ -21,6 +21,7 @@ class CategoriesRepository(BaseRepository):
             INSERT OR IGNORE INTO categories (id, label) VALUES ("31625a2a-a9a3-41a9-9412-c5705341e072", "Βλάβες");
             INSERT OR IGNORE INTO categories (id, label) VALUES ("31625a2a-a9a3-41a9-9412-c5705341e073", "Απορρίμματα");
             INSERT OR IGNORE INTO categories (id, label) VALUES ("31625a2a-a9a3-41a9-9412-c5705341e074", "Παράνομη στάθμευση");
+            INSERT OR IGNORE INTO categories (id, label) VALUES ("31625a2a-a9a3-41a9-9412-c5705341e075", "Άλλο");
         ''')
     
     def get_all_categories(self):
