@@ -120,6 +120,7 @@ class ProblemsRepository(BaseRepository):
         if problem_in_db is None:
             return False
 
+        self.sql_command(f'DELETE FROM comments WHERE problemId = "{id}"')
         self.sql_command(f'DELETE FROM problems WHERE id = "{id}"')
 
         return True
