@@ -1,6 +1,6 @@
 # Υλοποιεί το repository για τις καταστάσεις των προβλημάτων
-from models.State import State
-from repos.BaseRepository import BaseRepository
+from lib.models.State import State
+from lib.repos.BaseRepository import BaseRepository
 
 class StatesRepository(BaseRepository):
     def __init__(self):

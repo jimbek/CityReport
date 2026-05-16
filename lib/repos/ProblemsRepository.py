@@ -1,8 +1,8 @@
 # Υλοποιεί το repository για τα προβλήματα
 import datetime
 
-from repos.BaseRepository import BaseRepository
-from models.Problem import Problem
+from lib.repos.BaseRepository import BaseRepository
+from lib.models.Problem import Problem
 
 class ProblemsRepository(BaseRepository):
     def __init__(self):
@@ -108,7 +108,7 @@ class ProblemsRepository(BaseRepository):
         data['longitude'] = data.get('longitude', problem_in_db['longitude'])
 
         problem = Problem.from_dict(data)
-        query = f'UPDATE problems SET categoryId = {problem.categoryId}, stateId = {problem.stateId}, title = "{problem.title}", description = "{problem.description}", latitude = {problem.latitude}, longitude = {problem.longitude}, updatedAt = "{problem.updatedAt}" WHERE id = "{id}"'
+        query = f'UPDATE problems SET categoryId = "{problem.categoryId}", stateId = "{problem.stateId}", title = "{problem.title}", description = "{problem.description}", latitude = {problem.latitude}, longitude = {problem.longitude}, updatedAt = "{problem.updatedAt}" WHERE id = "{id}"'
 
         self.sql_command(query)
 

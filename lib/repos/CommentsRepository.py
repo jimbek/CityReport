@@ -1,7 +1,7 @@
 # Υλοποιεί το repository για τα σχόλια
-from models.Comment import Comment
+from lib.models.Comment import Comment
 
-from repos.BaseRepository import BaseRepository
+from lib.repos.BaseRepository import BaseRepository
 
 class CommentsRepository(BaseRepository):
     def __init__(self):

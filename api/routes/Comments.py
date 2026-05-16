@@ -4,8 +4,8 @@ import uuid
 
 from flask import request
 
-from repos.CommentsRepository import CommentsRepository
-from repos.ProblemsRepository import ProblemsRepository
+from lib.repos.CommentsRepository import CommentsRepository
+from lib.repos.ProblemsRepository import ProblemsRepository
 
 repo = CommentsRepository()
 repo.apply_migrations()

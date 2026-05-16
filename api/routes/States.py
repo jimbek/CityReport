@@ -3,8 +3,8 @@ import uuid
 
 from flask import request
 
-from repos.StatesRepository import StatesRepository
-from repos.ProblemsRepository import ProblemsRepository
+from lib.repos.StatesRepository import StatesRepository
+from lib.repos.ProblemsRepository import ProblemsRepository
 
 repo = StatesRepository()
 repo.apply_migrations()

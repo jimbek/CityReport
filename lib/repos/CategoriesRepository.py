@@ -1,6 +1,6 @@
 # Υλοποιεί το repository για τις κατηγορίες προβλημάτων
-from models.Category import Category
-from repos.BaseRepository import BaseRepository
+from lib.models.Category import Category
+from lib.repos.BaseRepository import BaseRepository
 
 class CategoriesRepository(BaseRepository):
     def __init__(self):

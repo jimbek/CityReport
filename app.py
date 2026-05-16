@@ -1,10 +1,10 @@
 # Εκκινεί την εφαρμογή
 from flask import Flask
 
-from routes.Comments import create_comment, get_comments
-from routes.States import create_state, delete_state, get_state, get_states, update_state
-from routes.Categories import create_category, delete_category, get_categories, get_category, update_category
-from routes.Problems import create_problem, delete_problem, get_problem, get_problems, update_problem
+from api.routes.Comments import create_comment, get_comments
+from api.routes.States import create_state, delete_state, get_state, get_states, update_state
+from api.routes.Categories import create_category, delete_category, get_categories, get_category, update_category
+from api.routes.Problems import create_problem, delete_problem, get_problem, get_problems, update_problem
 
 app = Flask(__name__)
 
