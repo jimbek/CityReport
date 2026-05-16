@@ -51,17 +51,17 @@ class ProblemsRepository(BaseRepository):
             INSERT OR IGNORE INTO problems (id, categoryId, stateId, title, description, latitude, longitude, createdAt, updatedAt) VALUES ("31625a2a-a9a3-41a9-9412-c5705341e095", "31625a2a-a9a3-41a9-9412-c5705341e071", "31625a2a-a9a3-41a9-9412-c5705341e060", "Κατεστραμμένος φωτισμός σε πεζοδρόμιο", "Ο φωτισμός στο πεζοδρόμιο Χ είναι κατεστραμμένος και δεν λειτουργεί τη νύχτα.", 37.9940, 23.7380, "2024-01-22T20:00:00", "2024-01-22T20:00:00");
         ''')
 
-    def get_all_problems(self, categoryId: int = None, stateId: int = None, sortBy: str = None):
+    def get_all_problems(self, categoryId: str = None, stateId: str = None, sortBy: str = None):
         query = 'SELECT * FROM problems'
 
-        if categoryId is not None and categoryId > 0:
-            query += f' WHERE categoryId = {categoryId}'
+        if categoryId is not None and categoryId != '':
+            query += f' WHERE categoryId = "{categoryId}"'
 
-        if stateId is not None and stateId > 0:
+        if stateId is not None and stateId != '':
             if 'WHERE' in query:
-                query += f' AND stateId = {stateId}'
+                query += f' AND stateId = "{stateId}"'
             else:
-                query += f' WHERE stateId = {stateId}'
+                query += f' WHERE stateId = "{stateId}"'
         
         if sortBy is not None:
             query += f' ORDER BY {sortBy}'
@@ -85,7 +85,7 @@ class ProblemsRepository(BaseRepository):
     def add_problem(self, data: dict):
         problem = Problem.from_dict(data)
 
-        self.sql_command(f'INSERT INTO problems (id, categoryId, stateId, title, description, latitude, longitude, createdAt, updatedAt) VALUES ("{problem.id}", {problem.categoryId}, {problem.stateId}, "{problem.title}", "{problem.description}", {problem.latitude}, {problem.longitude}, "{problem.createdAt}", "{problem.updatedAt}")')
+        self.sql_command(f'INSERT INTO problems (id, categoryId, stateId, title, description, latitude, longitude, createdAt, updatedAt) VALUES ("{problem.id}", "{problem.categoryId}", "{problem.stateId}", "{problem.title}", "{problem.description}", {problem.latitude}, {problem.longitude}, "{problem.createdAt}", "{problem.updatedAt}")')
         
         return problem.id
     

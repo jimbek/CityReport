@@ -4,11 +4,13 @@ import uuid
 from flask import request
 
 from repos.CategoriesRepository import CategoriesRepository
-
+from repos.ProblemsRepository import ProblemsRepository
 
 repo = CategoriesRepository()
 repo.apply_migrations()
 repo.seed_db()
+
+propblems_repo = ProblemsRepository()
 
 def get_categories():
     return repo.get_all_categories(), 200
@@ -51,6 +53,11 @@ def update_category(id: str):
     return id, 200
 
 def delete_category(id: str):
+    problems = propblems_repo.get_all_problems(categoryId = id)
+
+    if len(problems) > 0:
+        return "Cannot delete category with problems", 400
+
     found = repo.delete_category(id)
 
     if not found:

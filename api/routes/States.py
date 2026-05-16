@@ -4,10 +4,13 @@ import uuid
 from flask import request
 
 from repos.StatesRepository import StatesRepository
+from repos.ProblemsRepository import ProblemsRepository
 
 repo = StatesRepository()
 repo.apply_migrations()
 repo.seed_db()
+
+problem_repo = ProblemsRepository()
 
 def get_states():
     return repo.get_all_states(), 200
@@ -50,6 +53,11 @@ def update_state(id: str):
     return id, 200
 
 def delete_state(id: str):
+    problems = problem_repo.get_all_problems(stateId = id)
+
+    if len(problems) > 0:
+        return "Cannot delete state with problems", 400
+
     found = repo.delete_state(id)
 
     if not found:
