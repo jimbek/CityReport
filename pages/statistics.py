@@ -13,13 +13,23 @@ all_states = states_repo.get_all_states()
 all_categories = categories_repo.get_all_categories()
 
 global container
-
 container = st.container()
 container.text("Αποτελέσματα:")
 
+st.markdown(
+    """
+<style>
+    .st-emotion-cache-1w723zb {
+        max-width: 90%;
+    }
+</style>
+""",
+    unsafe_allow_html=True,
+)
+
 @st.cache_data
 def load_problems(stateId: str):
-    return [len(problems_repo.get_all_problems(stateId = stateId, categoryId = category['id'])) for category in all_categories]
+    return [len(problems_repo.get_all_problems(category['id'], stateId)) for category in all_categories]
 
 def show_statistics(stateId: str):
     categories = [category['label'] for category in all_categories]
