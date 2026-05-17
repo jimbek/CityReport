@@ -1,10 +1,10 @@
 # Δηλώνουμε τα routes που θα χρησιμοποιήσουμε στο API μας
 from flask import Flask
 
-from api.resources.Categories import create_category, delete_category, get_categories, get_category, update_category
-from api.resources.Comments import create_comment, get_comments
-from api.resources.Problems import create_problem, delete_problem, get_problem, get_problems, update_problem
-from api.resources.States import create_state, delete_state, get_state, get_states, update_state
+from resources.Categories import create_category, delete_category, get_categories, get_category, update_category
+from resources.Comments import create_comment, get_comments
+from resources.Problems import create_problem, delete_problem, get_problem, get_problems, update_problem
+from resources.States import create_state, delete_state, get_state, get_states, update_state
 
 def define_routes(app : Flask):
     app.add_url_rule('/states', methods = ['GET'], view_func = get_states)

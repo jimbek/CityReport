@@ -1,7 +1,7 @@
 # Εκκινεί την εφαρμογή
 from flask import Flask
 
-from api.routes.all import define_routes
+from routes import define_routes
 
 app = Flask(__name__)
 
