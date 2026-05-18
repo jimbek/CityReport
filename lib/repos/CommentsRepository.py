@@ -20,7 +20,7 @@ class CommentsRepository(BaseRepository):
         ''')
     
     def get_comments(self, problemId: str, size: int = 10):
-        data = self.sql_get_all(f'SELECT * FROM comments WHERE problemId = "{problemId}" ORDER BY createdAt DESC LIMIT {size}')
+        data = self.sql_get_all(f'SELECT * FROM comments WHERE problemId = "{problemId}" ORDER BY createdAt LIMIT {size}')
         
         return [Comment.from_tuple(row).to_dict() for row in data]
     
