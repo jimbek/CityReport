@@ -33,4 +33,16 @@ with st.form("edit_form"):
     state_id = st.selectbox("Κατάτασταση", index = next(i for i, state in enumerate(all_states) if state['id'] == problem['state']['id']), options = list(state['id'] for state in all_states), format_func = lambda x: get_state_label(x))
     category_id = st.selectbox("Κατηγορία", index = next(i for i, category in enumerate(all_categories) if category['id'] == problem['category']['id']), options = list(category['id'] for category in all_categories), format_func = lambda x: get_category_label(x))
     
-    submit_button = st.form_submit_button(label = "Ενημέρωση")
+    submit_button = st.form_submit_button(label = "Ενημέρωση", type = "tertiary", icon = ":material/save:")
+    if submit_button:
+        problem = {
+            "id": problem['id'],
+            "stateId": state_id,
+            "categoryId": category_id,
+            "title": title,
+            "description": description,
+            "longitude": longitude,
+            "latitude": latitude
+        }
+        problems_repo.update_problem(problem['id'], problem)
+        st.switch_page("pages/view.py")

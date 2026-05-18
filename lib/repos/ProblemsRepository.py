@@ -100,8 +100,8 @@ class ProblemsRepository(BaseRepository):
 
         data['updatedAt'] = datetime.datetime.now().isoformat()
 
-        data['categoryId'] = data.get('categoryId', problem_in_db['categoryId'])
-        data['stateId'] = data.get('stateId', problem_in_db['stateId'])
+        data['categoryId'] = data.get('categoryId', problem_in_db['category']['id'])
+        data['stateId'] = data.get('stateId', problem_in_db['state']['id'])
         data['title'] = data.get('title', problem_in_db['title'])
         data['description'] = data.get('description', problem_in_db['description'])
         data['latitude'] = data.get('latitude', problem_in_db['latitude'])

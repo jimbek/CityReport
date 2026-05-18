@@ -50,10 +50,9 @@ def show_problems(stateId: str, categoryId: str):
         latitudes.append(problem['latitude'])
         created_at.append(problem['createdAt'])
         updated_at.append(problem['updatedAt'])
-        actions.append(f"[Επεξεργασία](edit?problemId={problem['id']})")
+        actions.append(f"[:material/edit:](edit?problemId={problem['id']}) [:material/chat:](comments?problemId={problem['id']})")
 
-    confusion_matrix = pd.DataFrame(
-    {
+    container.table({
         "Τίτλος": titles,
         "Περιγραφή": descriptions,
         "Γεωγραφικό μήκος": longitudes,
@@ -61,9 +60,7 @@ def show_problems(stateId: str, categoryId: str):
         "Καταχώρηση": created_at,
         "Τελευταία ενημέρωση": updated_at,
         "Ενέργειες": actions
-    }
-)
-    container.table(confusion_matrix)
+    })
 
 with st.sidebar:
     st.subheader("Επιλογές")
