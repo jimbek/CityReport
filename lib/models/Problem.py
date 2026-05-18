@@ -11,22 +11,25 @@ class Problem:
         self.createdAt = createdAt
         self.updatedAt = updatedAt
 
+        self.category = None
+        self.state = None
+
     def to_dict(self):
         return {
             'id': self.id,
-            'categoryId': self.categoryId,
-            'stateId': self.stateId,
             'title': self.title,
             'description': self.description,
             'latitude': self.latitude,
             'longitude': self.longitude,
             'createdAt': self.createdAt,
-            'updatedAt': self.updatedAt
+            'updatedAt': self.updatedAt,
+            'category': self.category,
+            'state': self.state
         }
     
     @staticmethod
     def from_tuple(data: tuple):
-        return Problem(
+        problem = Problem(
             id = data[0],
             categoryId = data[1],
             stateId = data[2],
@@ -36,7 +39,11 @@ class Problem:
             longitude = data[6],
             createdAt = data[7],
             updatedAt = data[8]
-         )
+        )
+        problem.category = {'id': data[9], 'label': data[10]} if len(data) > 9 else None
+        problem.state = {'id': data[11], 'label': data[12]} if len(data) > 11 else None
+
+        return problem
     
     @staticmethod
     def from_dict(data: dict):
@@ -51,5 +58,8 @@ class Problem:
             createdAt = data['createdAt'],
             updatedAt = data['updatedAt']
         )
+
+        problem.category = data.get('category', None)
+        problem.state = data.get('state', None)
 
         return problem

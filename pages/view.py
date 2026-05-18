@@ -41,6 +41,7 @@ def show_problems(stateId: str, categoryId: str):
     latitudes = []
     created_at = []
     updated_at = []
+    actions = []
 
     for problem in problems:
         titles.append(problem['title'])
@@ -49,6 +50,7 @@ def show_problems(stateId: str, categoryId: str):
         latitudes.append(problem['latitude'])
         created_at.append(problem['createdAt'])
         updated_at.append(problem['updatedAt'])
+        actions.append(f"[Επεξεργασία](edit?problemId={problem['id']})")
 
     confusion_matrix = pd.DataFrame(
     {
@@ -57,7 +59,8 @@ def show_problems(stateId: str, categoryId: str):
         "Γεωγραφικό μήκος": longitudes,
         "Γεωγραφικό πλάτος": latitudes,
         "Καταχώρηση": created_at,
-        "Τελευταία ενημέρωση": updated_at
+        "Τελευταία ενημέρωση": updated_at,
+        "Ενέργειες": actions
     }
 )
     container.table(confusion_matrix)

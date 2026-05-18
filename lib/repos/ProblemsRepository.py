@@ -52,7 +52,7 @@ class ProblemsRepository(BaseRepository):
         ''')
 
     def get_all_problems(self, categoryId: str = None, stateId: str = None, sortBy: str = None):
-        query = 'SELECT * FROM problems'
+        query = 'SELECT problems.id, categoryId, stateId, title, description, latitude, longitude, createdAt, updatedAt, categories.id, categories.label, states.id, states.label FROM problems JOIN categories ON problems.categoryId = categories.id JOIN states ON problems.stateId = states.id'
 
         if categoryId is not None and categoryId != '':
             query += f' WHERE categoryId = "{categoryId}"'
@@ -73,7 +73,7 @@ class ProblemsRepository(BaseRepository):
         return problems
 
     def get_problem_by_id(self, id: str):
-        query = f'SELECT * FROM problems WHERE id = "{id}"'
+        query = f'SELECT problems.id, categoryId, stateId, title, description, latitude, longitude, createdAt, updatedAt, categories.id, categories.label, states.id, states.label FROM problems JOIN categories ON problems.categoryId = categories.id JOIN states ON problems.stateId = states.id WHERE problems.id = "{id}"'
 
         data = self.sql_get_one(query)
 
