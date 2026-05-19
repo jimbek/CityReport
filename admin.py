@@ -1,10 +1,14 @@
+# Defines pages and navigation for the admin interface.
+# Pages are defined in the pages/ directory and imported here.
 import streamlit as st
 
-view_page = st.Page("pages/view.py", title="Προεπισκόπηση",icon=":material/search:")
-statistics_page = st.Page("pages/statistics.py", title="Στατιστικά",icon=":material/bar_chart:")
+index = st.Page("pages/index.py", title = "Αναζήτηση",icon = ":material/search:")
 
-edit_page = st.Page("pages/edit.py", title="Επεξεργασία",icon=":material/edit:", visibility = "hidden")
-comment_page = st.Page("pages/comments.py", title="Σχόλια",icon=":material/chat:", visibility = "hidden")
+per_category = st.Page("pages/statistics/per_category.py", title = "Στατιστικά ανά κατηγορία",icon = ":material/bar_chart:")
+per_state = st.Page("pages/statistics/per_state.py", title = "Στατιστικά ανά κατάσταση",icon = ":material/bar_chart:")
 
-pg = st.navigation([view_page, statistics_page, edit_page, comment_page])
+edit = st.Page("pages/problems/edit.py", title = "Επεξεργασία",icon = ":material/edit:", visibility = "hidden")
+comment = st.Page("pages/problems/comments.py", title = "Σχόλια",icon = ":material/chat:", visibility = "hidden")
+
+pg = st.navigation([index, per_category, per_state, edit, comment])
 pg.run()

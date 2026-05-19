@@ -1,27 +1,16 @@
-# Περιγράφει την κατηγορία ενός προβλήματος
+# Describes the category of a problem.
 class Category:
     def __init__(self, id: int, label: str):
         self.id = id
         self.label = label  
 
-    def to_dict(self):
+    # Converts a database row to a dictionary.
+    @staticmethod
+    def to_dict(row: tuple = None):
+        if row is None:
+            return None
+        
         return {
-            'id': self.id,
-            'label': self.label
+            'id': row[0],
+            'label': row[1]
         }
-
-    @staticmethod
-    def from_tuple(data: tuple):
-        return Category(
-            id = data[0],
-            label = data[1]
-         )
-    
-    @staticmethod
-    def from_dict(data: dict):
-        category = Category(
-            id = data['id'],
-            label = data['label']
-        )
-
-        return category

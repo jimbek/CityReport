@@ -1,6 +1,5 @@
-# Υλοποιεί το repository για τα σχόλια
+# Implements the CommentsRepository class, which is responsible for managing the comments in the database.
 from lib.models.Comment import Comment
-
 from lib.repos.BaseRepository import BaseRepository
 
 class CommentsRepository(BaseRepository):
@@ -19,15 +18,18 @@ class CommentsRepository(BaseRepository):
             )
         ''')
     
-    def get_comments(self, problemId: str, size: int = 10):
-        data = self.sql_get_all(f'SELECT * FROM comments WHERE problemId = "{problemId}" ORDER BY createdAt LIMIT {size}')
+    # Retrieves all comments for a given problem ID, ordered by creation date.
+    def get_comments(self, problemId: str):
+        data = self.sql_get_all(f'SELECT * FROM comments WHERE problemId = "{problemId}" ORDER BY createdAt')
         
-        return [Comment.from_tuple(row).to_dict() for row in data]
+        return [Comment.to_dict(row) for row in data]
     
-
+    # Adds a new comment to the database and returns the ID of the newly created comment.
     def add_comment(self, data: dict):
-        comment = Comment.from_dict(data)
-
-        self.sql_command(f'INSERT INTO comments (id, problemId, author, content, createdAt) VALUES ("{comment.id}", "{comment.problemId}", "{comment.author}", "{comment.content}", "{comment.createdAt}")')
+        self.sql_command(f'INSERT INTO comments (id, problemId, author, content, createdAt) VALUES ("{data['id']}", "{data['problemId']}", "{data['author']}", "{data['content']}", "{data['createdAt']}")')
         
-        return comment.id
+        return data['id']
+    
+    # Deletes all comments associated with a given problem ID.
+    def delete_comments_by_problem_id(self, problemId: str):
+        self.sql_command(f'DELETE FROM comments WHERE problemId = "{problemId}"')

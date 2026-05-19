@@ -1,4 +1,4 @@
-# Υλοποιεί το repository για τις κατηγορίες προβλημάτων
+# Implements the CategoriesRepository class, which is responsible for managing the categories in the database.
 from lib.models.Category import Category
 from lib.repos.BaseRepository import BaseRepository
 
@@ -24,46 +24,20 @@ class CategoriesRepository(BaseRepository):
             INSERT OR IGNORE INTO categories (id, label) VALUES ("31625a2a-a9a3-41a9-9412-c5705341e075", "Άλλο");
         ''')
     
+    # Retrieves all categories from the database.
     def get_all_categories(self):
         data = self.sql_get_all('SELECT * FROM categories')
 
-        categories = [Category.from_tuple(row).to_dict() for row in data]
+        categories = [Category.to_dict(row) for row in data]
 
         return categories
     
+    # Retrieves a category by its ID from the database, checking if a category with the given ID exists.
     def get_category_by_id(self, id: str):
         query = f'SELECT * FROM categories WHERE id = "{id}"'
 
         data = self.sql_get_one(query)
 
-        category = Category.from_tuple(data) if data is not None else None
-        category = category.to_dict() if category is not None else None
+        category = Category.to_dict(data) if data is not None else None
 
         return category
-    
-    def add_category(self, data: dict):
-        category = Category.from_dict(data)
-
-        self.sql_command(f'INSERT INTO categories (id, label) VALUES ("{category.id}", "{category.label}")')
-
-        return category.id
-    
-    def update_category(self, id: str, data: dict):
-        data['id'] = id
-        category = Category.from_dict(data)
-        
-        query = f'UPDATE categories SET label = "{category.label}" WHERE id = "{id}"'
-
-        self.sql_command(query)
-
-        return id
-    
-    def delete_category(self, id: str):
-        category_in_db = self.get_category_by_id(id)
-
-        if category_in_db is None:
-            return False
-
-        self.sql_command(f'DELETE FROM categories WHERE id = "{id}"')
-
-        return True
