@@ -1,6 +1,6 @@
 # Describes a problem reported by a user.
 class Problem:
-    def __init__(self, id: str, categoryId: int, stateId: int, title: str, description: str, latitude: float, longitude: float, createdAt: str, updatedAt: str):
+    def __init__(self, id: str, categoryId: int, stateId: int, title: str, description: str, latitude: float, longitude: float, createdAt: str, updatedAt: str, reportedByEmail: str):
         self.id = id
         self.categoryId = categoryId
         self.stateId = stateId
@@ -10,7 +10,7 @@ class Problem:
         self.longitude = longitude
         self.createdAt = createdAt
         self.updatedAt = updatedAt
-
+        self.reportedByEmail = reportedByEmail # Optional email of the user who reported the problem.
         self.category = None
         self.state = None
 
@@ -25,12 +25,13 @@ class Problem:
             'longitude': data[6],
             'createdAt': data[7],
             'updatedAt': data[8],
+            'reportedByEmail': data[9],
             'category': {
                 'id': data[1],
-                'label': data[9]
+                'label': data[10]
             },
             'state': {
                 'id': data[2],
-                'label': data[10]
+                'label': data[11]
             }
         }

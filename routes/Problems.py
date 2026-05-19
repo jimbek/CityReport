@@ -64,6 +64,8 @@ def create_problem():
 
     data['createdAt'] = data['updatedAt'] = datetime.datetime.now().isoformat()
 
+    data['reportedByEmail'] = data.get('reportedByEmail', '')
+
     return repo.add_problem(data), 201
 
 # PUT /problems/<string:id> - Update a problem by ID.
