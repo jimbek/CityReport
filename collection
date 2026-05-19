@@ -106,14 +106,6 @@
                     "problems",
                     "{{problem_id}}",
                     "comments"
-                  ],
-                  "query": [
-                    {
-                      "key": "size",
-                      "value": "",
-                      "type": "text",
-                      "disabled": true
-                    }
                   ]
                 }
               },
@@ -126,7 +118,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"author\": \"Πολίτης\"/* ή \"Διαχειριστής\" */,\r\n    \"content\": \" Πότε θα επιληθεί το πρόβλημα;\"\r\n}",
+                  "raw": "{\r\n    \"author\": \"Πολίτης\",\r\n    \"content\": \"Πότε θα επιληθεί το πρόβλημα;\"\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -208,7 +200,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"categoryId\": 1,\r\n    \"title\": \"Τίτλος\",\r\n    \"description\": \"Περιγραφή\",\r\n    \"latitude\": 52.5487429714954,\r\n    \"longitude\": -1.81602098644987\r\n}",
+              "raw": "{\r\n    \"categoryId\": \"31625a2a-a9a3-41a9-9412-c5705341e071\",\r\n    \"title\": \"Τίτλος\",\r\n    \"description\": \"Περιγραφή\",\r\n    \"latitude\": 52.5487429714954,\r\n    \"longitude\": -1.81602098644987\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -234,7 +226,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"title\": \"Τίτλος\",\r\n    \"description\": \"Περιγραφή\",\r\n    \"latitude\": 52.5487429714954,\r\n    \"longitude\": -1.81602098644987\r\n}",
+              "raw": "{\r\n    \"title\": \"Τίτλος\",\r\n    \"description\": \"Άλλη περιγραφή\",\r\n    \"latitude\": 52.5487429714954,\r\n    \"longitude\": -1.81602098644987\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
