@@ -1,7 +1,5 @@
 # This pages allows admins to add comments on problems.
-import datetime
 import streamlit as st
-import uuid
 
 from lib.repos.CommentsRepository import CommentsRepository
 
@@ -18,11 +16,9 @@ if prompt := st.chat_input("Πληκτρολογήστε το σχόλιό σα�
     
     # Save the comment to the repository.
     comments_repo.add_comment({
-        "id": str(uuid.uuid4()),
         "problemId": st.query_params.get('problemId', ['']),
         "author": "Admin",
-        "content": prompt,
-        "createdAt": datetime.datetime.now().isoformat()
+        "content": prompt
     })
 
     # TODO: Κάλεσε τη μέθοδο send_email της κλάσης EmailService.

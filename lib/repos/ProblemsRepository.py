@@ -1,5 +1,6 @@
 # Implements the ProblemsRepository class which provides methods to interact with the problems table in the database.
 import datetime
+import uuid
 
 from lib.repos.BaseRepository import BaseRepository
 from lib.models.Problem import Problem
@@ -99,6 +100,10 @@ class ProblemsRepository(BaseRepository):
 
     # Adds a new problem to the database and returns the ID of the newly created problem.
     def add_problem(self, data: dict):
+        data['id'] = str(uuid.uuid4())
+
+        data['createdAt'] = data['updatedAt'] = datetime.datetime.now().isoformat()
+
         self.sql_command(f'''
                          INSERT INTO problems (id, categoryId, stateId, title, description, latitude, longitude, createdAt, updatedAt, reportedByEmail)
                          VALUES ("{data["id"]}", "{data["categoryId"]}", "{data["stateId"]}", "{data["title"]}", "{data["description"]}", {data["latitude"]}, {data["longitude"]}, "{data["createdAt"]}", "{data["updatedAt"]}", "{data["reportedByEmail"]}")''')

@@ -1,7 +1,4 @@
 # Defines the routes for the Problems resource.
-import datetime
-import uuid
-
 from flask import request
 
 from lib.repos.CategoriesRepository import CategoriesRepository
@@ -58,11 +55,7 @@ def create_problem():
     if data.get("categoryId") is not None and data.get("categoryId") != '' and not categories_repo.category_exists(data.get("categoryId")):
         return "Category not found", 404
 
-    data['id'] = str(uuid.uuid4())
-
     data['stateId'] = StatesRepository.DEFAULT_STATE # Default state ID for "Νέο"
-
-    data['createdAt'] = data['updatedAt'] = datetime.datetime.now().isoformat()
 
     data['reportedByEmail'] = data.get('reportedByEmail', '')
 

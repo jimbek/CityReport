@@ -1,4 +1,8 @@
 # Implements the CommentsRepository class, which is responsible for managing the comments in the database.
+import uuid
+
+from datetime import datetime
+
 from lib.models.Comment import Comment
 from lib.repos.BaseRepository import BaseRepository
 
@@ -26,6 +30,10 @@ class CommentsRepository(BaseRepository):
     
     # Adds a new comment to the database and returns the ID of the newly created comment.
     def add_comment(self, data: dict):
+        data['id'] = str(uuid.uuid4())
+        
+        data['createdAt'] = datetime.now().isoformat()
+
         self.sql_command(f'INSERT INTO comments (id, problemId, author, content, createdAt) VALUES ("{data['id']}", "{data['problemId']}", "{data['author']}", "{data['content']}", "{data['createdAt']}")')
         
         return data['id']

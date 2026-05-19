@@ -1,7 +1,4 @@
 # Defines the routes for the Comment resource.
-import datetime
-import uuid
-
 from flask import request
 
 from lib.repos.CommentsRepository import CommentsRepository
@@ -43,10 +40,6 @@ def create_comment(problemId: str):
     if problem_repo.problem_exists(problemId) is False:
         return "Problem not found", 404
     
-    data['id'] = str(uuid.uuid4())
-    
     data['problemId'] = problemId
-
-    data['createdAt'] = datetime.datetime.now().isoformat()
 
     return repo.add_comment(data), 201
