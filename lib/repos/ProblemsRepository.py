@@ -135,11 +135,14 @@ class ProblemsRepository(BaseRepository):
     # Deletes a problem from the database by its ID. Also deletes all comments associated with the problem.
     # If the problem does not exist, returns False. Otherwise, returns True after deletion.
     def delete_problem(self, id: str):
-        problem_in_db = self.get_problem_by_id(id)
-
-        if problem_in_db is None:
+        if not self.problem_exists(id):
             return False
 
         self.sql_command(f'DELETE FROM problems WHERE id = "{id}"')
 
         return True
+    
+    # Checks if a problem exists in the database by its ID.
+    # Returns True if it exists, otherwise False.
+    def problem_exists(self, id: str):
+        return self.sql_get_one(f'SELECT id FROM problems WHERE id = "{id}"') is not None

@@ -16,17 +16,17 @@ problem_repo = ProblemsRepository()
 
 # GET /problems/<string:problemId>/comments - Get comments for a problem.
 def get_comments(problemId: str):
-    if problemId is None:
+    if problemId is None or problemId == '':
         return "Missing problemId", 400
 
-    if problem_repo.get_problem_by_id(problemId) is None:
+    if problem_repo.problem_exists(problemId) is False:
         return "Problem not found", 404
 
     return repo.get_comments(problemId), 200
 
 # POST /problems/<string:problemId>/comments - Create a comment for a problem.
 def create_comment(problemId: str):
-    if problemId is None:
+    if problemId is None or problemId == '':
         return "Missing problemId", 400
     
     data = request.get_json()
@@ -40,7 +40,7 @@ def create_comment(problemId: str):
     if "author" in data and data["author"] not in ["Πολίτης", "Διαχειριστής"]:
         return "Invalid author", 400
     
-    if problem_repo.get_problem_by_id(problemId) is None:
+    if problem_repo.problem_exists(problemId) is False:
         return "Problem not found", 404
     
     data['id'] = str(uuid.uuid4())

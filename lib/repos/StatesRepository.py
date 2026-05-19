@@ -39,3 +39,8 @@ class StatesRepository(BaseRepository):
         state = State.to_dict(data) if data is not None else None
 
         return state
+    
+    # Checks if a state exists in the database by its ID.
+    # Returns True if it exists, otherwise False.
+    def state_exists(self, id: str):
+        return self.sql_get_one(f'SELECT id FROM states WHERE id = "{id}"') is not None

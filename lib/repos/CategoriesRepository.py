@@ -41,3 +41,8 @@ class CategoriesRepository(BaseRepository):
         category = Category.to_dict(data) if data is not None else None
 
         return category
+    
+    # Checks if a category exists in the database by its ID.
+    # Returns True if it exists, otherwise False.
+    def category_exists(self, id: str):
+        return self.sql_get_one(f'SELECT id FROM categories WHERE id = "{id}"') is not None
