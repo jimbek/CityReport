@@ -19,6 +19,12 @@ all_categories = categories_repo.get_all_categories()
 
 problem = problems_repo.get_problem_by_id(st.query_params.get('problemId', ['']))
 
+# TODO: Αρχικοποίησε ένα sidebar με τα κουμπιά "Έλεγχος" και "Διαγραφή".
+# TODO: Ο έλεγχος θα πρέπει να καλεί τη μέθοδο validate_category του LLMService.
+# TODO: Αν η επιλεγμένη κατηγορία δεν είναι έγκυρη, εμφάνισε απλά ένα μήνυμα.
+# TODO: Θα βρεις στο αντίστοιχο repository τη μέθοδο για τη διαγραφή ενός προβλήματος.
+# TODO: Βασίσου στη σελίδα per_state.py για να δεις πώς αρχικοποιείται ένα sidebar.
+
 # Initialize a form for editing the problem.
 with st.form("edit_form"):
 

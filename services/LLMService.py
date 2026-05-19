@@ -1,0 +1,1 @@
+# TODO: Υλοποίησε την κλάση LLMService με την μέθοδο validate_category(id: str, description: str).

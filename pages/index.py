@@ -55,6 +55,9 @@ def show_problems(stateId: str, categoryId: str):
         created_at.append(problem['createdAt'])
         updated_at.append(problem['updatedAt'])
 
+        # TODO: Το παρακάτω θα δεις ότι αν πατήσεις κάποιο από τα εικονίδια, θα σε πάει σε νέο tab.
+        # TODO: Αν θες (άστο για το τέλος) φτιάξτα να παραμένουν στο ίδιο tab.
+
         # Append action links in markdown format.
         actions.append(f"[:material/edit:](edit?problemId={problem['id']}) [:material/chat:](comments?problemId={problem['id']})")
 
@@ -91,5 +94,9 @@ with st.sidebar:
         "Κατηγορία:",
         options = list(category['id'] for category in all_categories),
         format_func = lambda x: get_category_label(x))
+
+    # TODO: Πρόσθεσε ένα dropdown για την ταξινόμηση των προβλημάτων.
+    # TODO: Να έχει τις επιλογές "Χωρίς ταξινόμηση", "Ημερομηνία καταχώρησης" και "Ημερομηνία τελευταίας ενημέρωσης".
+    # TODO: Θα πρέπει να προσθέσεις ένα νέο πεδίο στην κλήση της show_problems για να περνάει την επιλεγμένη ταξινόμηση.
 
     show_problems(state_id, category_id)
