@@ -100,6 +100,11 @@ class ProblemsRepository(BaseRepository):
 
     # Adds a new problem to the database and returns the ID of the newly created problem.
     def add_problem(self, data: dict):
+        if 'reportedByEmail' in data and data['reportedByEmail'] is not None:
+            # TODO: Validate email format.
+            # TODO: If invalid, return a 400 Bad Request error with a message indicating the issue.
+            pass
+
         data['id'] = str(uuid.uuid4())
 
         data['createdAt'] = data['updatedAt'] = datetime.datetime.now().isoformat()
@@ -114,6 +119,11 @@ class ProblemsRepository(BaseRepository):
     # If a field is not provided in the data, it retains its current value in the database.
     # If the problem does not exist, returns None.
     def update_problem(self, id: str, data: dict):
+        if 'reportedByEmail' in data and data['reportedByEmail'] is not None:
+            # TODO: Validate email format.
+            # TODO: If invalid, return a 400 Bad Request error with a message indicating the issue.
+            pass
+
         problem_in_db = self.get_problem_by_id(id)
 
         if problem_in_db is None:
