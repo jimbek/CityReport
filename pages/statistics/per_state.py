@@ -2,9 +2,12 @@
 import pandas as pd
 import streamlit as st
 
+from pages.BackButton import show_back_button
 from lib.repos.CategoriesRepository import CategoriesRepository
 from lib.repos.ProblemsRepository import ProblemsRepository
 from lib.repos.StatesRepository import StatesRepository
+
+show_back_button()
 
 states_repo = StatesRepository()
 categories_repo = CategoriesRepository()
