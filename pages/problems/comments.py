@@ -56,6 +56,14 @@ comment_status = st.session_state.pop("comment_status", None)
 if comment_status:
     st.success(comment_status)
 
+email_status = st.session_state.pop("email_status", None)
+
+if email_status:
+    if email_status["sent"]:
+        st.success(email_status["message"])
+    else:
+        st.error(email_status["message"])
+
 # Display chat messages from history on app rerun.
 for comment in comments:
     author = html.escape(comment["author"])
@@ -98,11 +106,10 @@ with st.form("comment_form", clear_on_submit=True):
 
             if send_email:
                 email_sent, email_message = email_service.send_email(reported_email, problem["title"], prompt)
-
-                if email_sent:
-                    st.success(email_message)
-                else:
-                    st.error(email_message)
+                st.session_state["email_status"] = {
+                    "sent": email_sent,
+                    "message": email_message
+                }
 
             st.session_state["comment_status"] = "Το σχόλιο προστέθηκε."
             st.rerun()
