@@ -13,6 +13,8 @@ problems_repo = ProblemsRepository()
 all_states = states_repo.get_all_states()
 all_categories = categories_repo.get_all_categories()
 
+st.markdown("<h1 style='font-size: 1.75rem;'>Προβλήματα</h1>", unsafe_allow_html=True)
+
 # Initialize a container for the page content.
 global container
 container = st.container()
@@ -28,53 +30,61 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# Function to display problems based on selected state and category.
-def show_problems(stateId: str, categoryId: str):
+# Function to display problems based on selected state, category, search text, and sorting option.
+def format_date(date_text: str):
+    if date_text is None:
+        return ""
+
+    return date_text.replace("T", " ")[:16]
+
+
+def show_problems(stateId: str, categoryId: str, sortBy: str, searchText: str):
     global container
     
-    problems = problems_repo.get_all_problems(categoryId, stateId)
+    problems = problems_repo.get_all_problems(categoryId, stateId, sortBy, searchText)
 
     if not problems:
         container.write("Δεν βρέθηκαν προβλήματα με τα επιλεγμένα κριτήρια.")
         return
 
-    titles = []
-    descriptions = []
-    longitudes = []
-    latitudes = []
-    created_at = []
-    updated_at = []
-    actions = []
+    header = container.columns([2, 3, 1, 1, 1.4, 1.4, 1])
+    header[0].markdown("**Τίτλος**")
+    header[1].markdown("**Περιγραφή**")
+    header[2].markdown("**Μήκος**")
+    header[3].markdown("**Πλάτος**")
+    header[4].markdown("**Καταχώρηση**")
+    header[5].markdown("**Ενημέρωση**")
+    header[6].markdown("**Ενέργειες**")
 
     for problem in problems:
-        # Append problem details to the corresponding lists for display in the table.
-        titles.append(problem['title'])
-        descriptions.append(problem['description'])
-        longitudes.append(problem['longitude'])
-        latitudes.append(problem['latitude'])
-        created_at.append(problem['createdAt'])
-        updated_at.append(problem['updatedAt'])
+        row = container.columns([2, 3, 1, 1, 1.4, 1.4, 1])
+        row[0].write(problem['title'])
+        row[1].write(problem['description'])
+        row[2].write(problem['longitude'])
+        row[3].write(problem['latitude'])
+        row[4].write(format_date(problem['createdAt']))
+        row[5].write(format_date(problem['updatedAt']))
 
-        # TODO: Το παρακάτω θα δεις ότι αν πατήσεις κάποιο από τα εικονίδια, θα σε πάει σε νέο tab.
-        # TODO: Αν θες (άστο για το τέλος) φτιάξτα να παραμένουν στο ίδιο tab.
+        action_buttons = row[6].columns(2)
 
-        # Append action links in markdown format.
-        actions.append(f"[:material/edit:](edit?problemId={problem['id']}) [:material/chat:](comments?problemId={problem['id']})")
+        action_buttons[0].page_link(
+            "pages/problems/edit.py",
+            label = "",
+            icon = ":material/edit:",
+            query_params = {"problemId": problem['id']})
 
-    # Display the problems in a table format with an additional column for actions.
-    container.table({
-        "Τίτλος": titles,
-        "Περιγραφή": descriptions,
-        "Γεωγραφικό μήκος": longitudes,
-        "Γεωγραφικό πλάτος": latitudes,
-        "Καταχώρηση": created_at,
-        "Τελευταία ενημέρωση": updated_at,
-        "Ενέργειες": actions
-    })
+        action_buttons[1].page_link(
+            "pages/problems/comments.py",
+            label = "",
+            icon = ":material/chat:",
+            query_params = {"problemId": problem['id']})
 
 # Display sidebar options for filtering problems by state and category.
 with st.sidebar:
     st.subheader("Επιλογές")
+
+    def clear_search():
+        st.session_state["problem_search_text"] = ""
 
     # Helper function to get the label for a given state ID.
     def get_state_label(state_id):
@@ -84,7 +94,14 @@ with st.sidebar:
     def get_category_label(category_id):
         return next(category['label'] for category in all_categories if category['id'] == category_id)
 
-    # Display dropdowns for selecting state and category, and show problems based on the selections.
+    # Display text search, dropdown filters, and sorting controls.
+    search_text = st.text_input(
+        "Αναζήτηση:",
+        placeholder = "Γράψτε λέξη από τίτλο ή περιγραφή",
+        key = "problem_search_text")
+
+    st.button("Καθαρισμός αναζήτησης", on_click = clear_search)
+
     state_id = st.selectbox(
         "Κατάτασταση:",
         options = list(state['id'] for state in all_states),
@@ -95,8 +112,12 @@ with st.sidebar:
         options = list(category['id'] for category in all_categories),
         format_func = lambda x: get_category_label(x))
 
-    # TODO: Πρόσθεσε ένα dropdown για την ταξινόμηση των προβλημάτων.
-    # TODO: Να έχει τις επιλογές "Χωρίς ταξινόμηση", "Ημερομηνία καταχώρησης" και "Ημερομηνία τελευταίας ενημέρωσης".
-    # TODO: Θα πρέπει να προσθέσεις ένα νέο πεδίο στην κλήση της show_problems για να περνάει την επιλεγμένη ταξινόμηση.
+    sort_options = {
+        "Χωρίς ταξινόμηση": "",
+        "Ημερομηνία καταχώρησης": "createdAt",
+        "Ημερομηνία τελευταίας ενημέρωσης": "updatedAt",
+    }
 
-    show_problems(state_id, category_id)
+    sort_label = st.selectbox("Ταξινόμηση:", options = list(sort_options.keys()))
+
+    show_problems(state_id, category_id, sort_options[sort_label], search_text)
