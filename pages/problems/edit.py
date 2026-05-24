@@ -2,9 +2,14 @@
 # It retrieves the problem's current data and pre-fills the form fields.
 import streamlit as st
 
+from pages.BackButton import show_back_button
 from lib.repos.CategoriesRepository import CategoriesRepository
+from lib.repos.CommentsRepository import CommentsRepository
 from lib.repos.ProblemsRepository import ProblemsRepository
 from lib.repos.StatesRepository import StatesRepository
+from services.LLMService import LLMService
+
+show_back_button()
 
 # Initialize a container for the page content.
 container = st.container()
@@ -13,17 +18,20 @@ container.header("Επεξεργασία")
 states_repo = StatesRepository()
 categories_repo = CategoriesRepository()
 problems_repo = ProblemsRepository()
+comments_repo = CommentsRepository()
+llm_service = LLMService()
 
 all_states = states_repo.get_all_states()
 all_categories = categories_repo.get_all_categories()
 
-problem = problems_repo.get_problem_by_id(st.query_params.get('problemId', ['']))
+problem_id = st.query_params.get('problemId', st.session_state.get("selected_problem_id", ""))
+st.session_state["selected_problem_id"] = problem_id
 
-# TODO: Αρχικοποίησε ένα sidebar με τα κουμπιά "Έλεγχος" και "Διαγραφή".
-# TODO: Ο έλεγχος θα πρέπει να καλεί τη μέθοδο validate_category του LLMService.
-# TODO: Αν η επιλεγμένη κατηγορία δεν είναι έγκυρη, εμφάνισε απλά ένα μήνυμα.
-# TODO: Θα βρεις στο αντίστοιχο repository τη μέθοδο για τη διαγραφή ενός προβλήματος.
-# TODO: Βασίσου στη σελίδα per_state.py για να δεις πώς αρχικοποιείται ένα sidebar.
+problem = problems_repo.get_problem_by_id(problem_id)
+
+if problem is None:
+    container.error("Το πρόβλημα δεν βρέθηκε.")
+    st.stop()
 
 # Initialize a form for editing the problem.
 with st.form("edit_form"):
@@ -72,4 +80,20 @@ with st.form("edit_form"):
 
         problems_repo.update_problem(problem['id'], problem)
 
+        st.switch_page("pages/index.py")
+
+with st.sidebar:
+    st.subheader("Επιλογές")
+
+    if st.button("Έλεγχος", type = "tertiary", icon = ":material/check_circle:"):
+        is_valid_category = llm_service.validate_category(category_id, description)
+
+        if is_valid_category:
+            st.success("Η επιλεγμένη κατηγορία φαίνεται έγκυρη.")
+        else:
+            st.warning("Η επιλεγμένη κατηγορία δεν φαίνεται έγκυρη για την περιγραφή.")
+
+    if st.button("Διαγραφή", type = "tertiary", icon = ":material/delete:"):
+        comments_repo.delete_comments_by_problem_id(problem['id'])
+        problems_repo.delete_problem(problem['id'])
         st.switch_page("pages/index.py")
