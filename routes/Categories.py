@@ -8,13 +8,19 @@ repo.seed_db()
 
 # GET /categories - Get all categories.
 def get_categories():
-    return repo.get_all_categories(), 200
+    try:
+        return repo.get_all_categories(), 200
+    except Exception as error:
+        return f"Internal server error: {error}", 500
 
 # GET /categories/<string:id> - Get a category by ID.
 def get_category(id : str):
-    category = repo.get_category_by_id(id)
+    try:
+        category = repo.get_category_by_id(id)
 
-    if category is None:
-        return "Category not found", 404
-    
-    return category, 200
+        if category is None:
+            return "Category not found", 404
+        
+        return category, 200
+    except Exception as error:
+        return f"Internal server error: {error}", 500
