@@ -86,12 +86,15 @@ with st.sidebar:
     st.subheader("Επιλογές")
 
     if st.button("Έλεγχος", type = "tertiary", icon = ":material/check_circle:"):
-        is_valid_category = llm_service.validate_category(category_id, description)
+        category_check = llm_service.validate_category(category_id, title, description)
 
-        if is_valid_category:
-            st.success("Η επιλεγμένη κατηγορία φαίνεται έγκυρη.")
+        if category_check["is_valid"]:
+            st.success(f"Η επιλεγμένη κατηγορία φαίνεται έγκυρη. Το Ollama πρότεινε: {category_check['predicted_category']}.")
         else:
-            st.warning("Η επιλεγμένη κατηγορία δεν φαίνεται έγκυρη για την περιγραφή.")
+            if category_check["predicted_category"]:
+                st.warning(f"Η επιλεγμένη κατηγορία είναι {category_check['selected_category']}, αλλά το Ollama πρότεινε: {category_check['predicted_category']}.")
+            else:
+                st.warning(category_check["message"])
 
     if st.button("Διαγραφή", type = "tertiary", icon = ":material/delete:"):
         comments_repo.delete_comments_by_problem_id(problem['id'])
