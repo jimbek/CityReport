@@ -1,20 +1,13 @@
 import os
-import smtplib
 import json
 import urllib.error
 import urllib.request
-from email.message import EmailMessage
 
 
 class EmailService:
     def __init__(self):
         self.resend_api_key = os.getenv("RESEND_API_KEY")
         self.resend_from_email = os.getenv("RESEND_FROM_EMAIL")
-        self.host = os.getenv("SMTP_HOST")
-        self.port = int(os.getenv("SMTP_PORT", "587"))
-        self.username = os.getenv("SMTP_USERNAME")
-        self.password = os.getenv("SMTP_PASSWORD")
-        self.sender = os.getenv("SMTP_FROM", self.username or "")
 
     def send_email(self, to: str, subject: str, body: str):
         if not to:
@@ -23,7 +16,7 @@ class EmailService:
         if self.resend_api_key:
             return self.send_email_with_resend(to, subject, body)
 
-        return self.send_email_with_smtp(to, subject, body)
+        return False, "Δεν έχει οριστεί RESEND_API_KEY."
 
     def send_email_with_resend(self, to: str, subject: str, body: str):
         if not self.resend_from_email:
@@ -56,28 +49,5 @@ class EmailService:
         except urllib.error.HTTPError as error:
             error_body = error.read().decode("utf-8", errors="replace")
             return False, f"Αποτυχία Resend ({error.code}): {error_body}"
-        except Exception as error:
-            return False, f"Αποτυχία αποστολής email: {error}"
-
-    def send_email_with_smtp(self, to: str, subject: str, body: str):
-        sender = self.sender
-
-        if not self.host or not sender:
-            return False, "Δεν έχει οριστεί RESEND_API_KEY ή SMTP configuration."
-
-        message = EmailMessage()
-        message["From"] = sender
-        message["To"] = to
-        message["Subject"] = subject
-        message.set_content(body)
-
-        try:
-            with smtplib.SMTP(self.host, self.port) as smtp:
-                smtp.starttls()
-                if self.username and self.password:
-                    smtp.login(self.username, self.password)
-                smtp.send_message(message)
-
-            return True, f"Το email στάλθηκε στο {to}."
         except Exception as error:
             return False, f"Αποτυχία αποστολής email: {error}"
