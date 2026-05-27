@@ -1,3 +1,5 @@
+# This is a back button displayed on all pages except the home page, allowing users to return to the home page easily.
+# The button is styled to be fixed at the top-left corner of the screen.
 import streamlit as st
 
 
