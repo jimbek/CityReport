@@ -1,0 +1,32 @@
+# We have implemented two services, one for the REST API and one for the streamlit app.
+# The REST API will be built from the Dockerfile in the docker/api/ directory, exposed on port 5000.
+# The streamlit app will be built from the Dockerfile in the docker/streamlit/ directory, exposed on port 8501.
+services:
+  api:
+    build:
+      context: ./
+      dockerfile: ./docker/api/Dockerfile
+
+    ports:
+      - "5000:5000"
+    
+    command: python api.py
+
+    volumes:
+      - ./database.db:/app/database.db
+
+  streamlit:
+    build:
+      context: ./
+      dockerfile: ./docker/streamlit/Dockerfile
+
+    ports:
+      - "8501:8501"
+    
+    command: streamlit run admin.py --server.port=8501 --server.address=0.0.0.0
+
+    depends_on:
+      - api
+
+    volumes:
+      - ./database.db:/app/database.db

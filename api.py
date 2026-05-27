@@ -31,4 +31,4 @@ app.add_url_rule('/problems/<string:problemId>/comments', methods = ['GET'], vie
 app.add_url_rule('/problems/<string:problemId>/comments', methods = ['POST'], view_func = create_comment)
 
 if __name__ == '__main__':
-    app.run(debug = False)
+    app.run(debug = False, host = '0.0.0.0', port = 5000)
