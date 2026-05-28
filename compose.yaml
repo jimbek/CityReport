@@ -3,9 +3,12 @@
 # The streamlit app will be built from the Dockerfile in the docker/streamlit/ directory, exposed on port 8501.
 
 # In order to run the containers:
-# 1. Open Docker Desktop and the terminal.
-# 2. Navigate to the directory containing this compose.yaml file.
-# 3. Run the command 'docker compose up'
+# 1. Create a .env file in the same directory as this compose.yaml file with the following content:
+#    RESEND_API_KEY=your_resend_api_key
+#    RESEND_FROM_EMAIL=your_resend_from_email
+# 2. Open Docker Desktop and the terminal.
+# 3. Navigate to the directory containing this compose.yaml file.
+# 4. Run the command 'docker compose up'
 services:
   api:
     build:
@@ -35,3 +38,7 @@ services:
 
     volumes:
       - ./database.db:/app/database.db
+    
+    environment:
+    - RESEND_API_KEY=${RESEND_API_KEY}
+    - RESEND_FROM_EMAIL=${RESEND_FROM_EMAIL}
