@@ -10,8 +10,8 @@ from lib.repos.CategoriesRepository import CategoriesRepository
 class LLMService:
     def __init__(self):
         self.categories_repo = CategoriesRepository()
-        self.ollama_url = os.getenv("OLLAMA_URL", "http://localhost:11434/api/generate")
-        self.ollama_model = os.getenv("OLLAMA_MODEL", "llama3.2")
+        self.ollama_url = os.getenv("OLLAMA_URL")
+        self.ollama_model = os.getenv("OLLAMA_MODEL")
 
     def validate_category(self, id: str, title: str, description: str):
         selected_category = self.categories_repo.get_category_by_id(id)
