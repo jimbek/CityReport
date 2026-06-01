@@ -21,7 +21,7 @@ services:
     command: python api.py
 
     volumes:
-      - ./database.db:/app/database.db
+      - ./database/database.db:/app/database.db
 
   streamlit:
     build:
@@ -37,7 +37,7 @@ services:
       - api
 
     volumes:
-      - ./database.db:/app/database.db
+      - ./database/database.db:/app/database.db
     
     environment:
     - RESEND_API_KEY=${RESEND_API_KEY}
