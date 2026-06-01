@@ -6,7 +6,6 @@ from lib.repos.ProblemsRepository import ProblemsRepository
 
 # Initialize the CommentsRepository and apply migrations.
 repo = CommentsRepository()
-repo.apply_migrations()
 
 # Initialize the ProblemsRepository to check for the existence of problems when creating comments.
 problem_repo = ProblemsRepository()

@@ -10,8 +10,6 @@ from lib.repos.CategoriesRepository import CategoriesRepository
 class LLMService:
     def __init__(self):
         self.categories_repo = CategoriesRepository()
-        self.categories_repo.apply_migrations()
-        self.categories_repo.seed_db()
         self.ollama_url = os.getenv("OLLAMA_URL", "http://localhost:11434/api/generate")
         self.ollama_model = os.getenv("OLLAMA_MODEL", "llama3.2")
 

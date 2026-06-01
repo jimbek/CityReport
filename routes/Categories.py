@@ -3,8 +3,6 @@ from lib.repos.CategoriesRepository import CategoriesRepository
 
 # Initialize the repository, apply migrations, and seed the database with initial data.
 repo = CategoriesRepository()
-repo.apply_migrations()
-repo.seed_db()
 
 # GET /categories - Get all categories.
 def get_categories():

@@ -1,4 +1,4 @@
-# We have implemented two services, one for the REST API and one for the streamlit app.
+# We have implemented three services, one for the REST API, one for the streamlit app, and one for seeding the database.
 # The REST API will be built from the Dockerfile in the docker/flask/ directory, exposed on port 5000.
 # The streamlit app will be built from the Dockerfile in the docker/streamlit/ directory, exposed on port 8501.
 
@@ -10,6 +10,16 @@
 # 3. Navigate to the directory containing this compose.yaml file.
 # 4. Run the command 'docker compose up'
 services:
+  seed:
+    build:
+      context: ./
+      dockerfile: ./docker/migrations/Dockerfile
+    
+    volumes:
+      - ./database/database.db:/app/database.db
+
+    command: python seed.py
+
   api:
     build:
       context: ./
@@ -19,6 +29,9 @@ services:
       - "5000:5000"
     
     command: python api.py
+
+    depends_on:
+      - seed
 
     volumes:
       - ./database/database.db:/app/database.db
@@ -34,7 +47,7 @@ services:
     command: streamlit run admin.py --server.port=8501 --server.address=0.0.0.0
 
     depends_on:
-      - api
+      - seed
 
     volumes:
       - ./database/database.db:/app/database.db

@@ -3,8 +3,6 @@ from lib.repos.StatesRepository import StatesRepository
 
 # Initialize the repository, apply migrations, and seed the database.
 repo = StatesRepository()
-repo.apply_migrations()
-repo.seed_db()
 
 # GET /states - Get all states.
 def get_states():

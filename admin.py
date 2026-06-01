@@ -2,10 +2,6 @@
 # Pages are defined in the pages/ directory and imported here.
 import streamlit as st
 
-from lib.repos.DatabaseInitializer import initialize_database
-
-initialize_database()
-
 index = st.Page("pages/index.py", title = "Προβλήματα", visibility = "hidden")
 
 per_category = st.Page("pages/statistics/per_category.py", title = "Στατιστικά ανά κατηγορία",icon = ":material/bar_chart:")

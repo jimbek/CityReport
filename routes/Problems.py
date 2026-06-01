@@ -8,8 +8,6 @@ from lib.repos.ProblemsRepository import ProblemsRepository
 
 # Initialize the repository, apply migrations, and seed the database.
 repo = ProblemsRepository()
-repo.apply_migrations()
-repo.seed_db()
 
 categories_repo = CategoriesRepository()
 states_repo = StatesRepository()
