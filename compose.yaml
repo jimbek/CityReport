@@ -4,6 +4,7 @@
 # 3. api: This service runs the REST API built with Flask.
 # 4. streamlit: This service runs the Streamlit admin interface.
 #
+# The seed service will be built from the Dockerfile in the docker/migrations/ directory.
 # The ollama service will be built from the Dockerfile in the docker/ollama/ directory, exposed on port 11434.
 # The REST API will be built from the Dockerfile in the docker/flask/ directory, exposed on port 5000.
 # The streamlit app will be built from the Dockerfile in the docker/streamlit/ directory, exposed on port 8501.

@@ -1,7 +1,6 @@
 # Implements the ProblemsRepository class which provides methods to interact with the problems table in the database.
 import datetime
 import re
-import unicodedata
 import uuid
 
 from lib.repos.BaseRepository import BaseRepository
@@ -61,7 +60,7 @@ class ProblemsRepository(BaseRepository):
     # Retrieves all problems from the database, with optional filtering by categoryId and stateId.
     # Additionally, allows optional sorting on a specified field.
     # Runs a JOIN query to retrieve the category and state information for each problem.
-    def get_all_problems(self, categoryId: str = None, stateId: str = None, sortBy: str = None, searchText: str = None):
+    def get_all_problems(self, categoryId: str = None, stateId: str = None, sortBy: str = None):
         query = '''
                 SELECT problems.id, categoryId, stateId, title, description, latitude, longitude, createdAt, updatedAt, reportedByEmail, categories.label, states.label
                 FROM problems
@@ -79,31 +78,14 @@ class ProblemsRepository(BaseRepository):
             else:
                 query += f' WHERE stateId = "{stateId}"'
 
-        if sortBy in ['createdAt', 'updatedAt']:
+        if sortBy is not None and sortBy != '':
             query += f' ORDER BY {sortBy} DESC'
 
         data = self.sql_get_all(query)
         
         problems = [Problem.to_dict(row) for row in data]
 
-        if searchText is not None and searchText.strip() != '':
-            search_text = self.normalize_search_text(searchText)
-
-            problems = [
-                problem for problem in problems
-                if search_text in self.normalize_search_text(problem['title'])
-                or search_text in self.normalize_search_text(problem['description'])
-            ]
-
         return problems
-
-    def normalize_search_text(self, text: str):
-        text_without_tones = ''.join(
-            character for character in unicodedata.normalize('NFD', text)
-            if unicodedata.category(character) != 'Mn'
-        )
-
-        return text_without_tones.casefold().strip()
 
     # Retrieves a problem by its ID from the database, including its category and state information.
     def get_problem_by_id(self, id: str):
@@ -122,7 +104,7 @@ class ProblemsRepository(BaseRepository):
 
     # Adds a new problem to the database and returns the ID of the newly created problem.
     def add_problem(self, data: dict):
-        if not self.is_valid_email(data.get('reportedByEmail', '')):
+        if not self.__is_valid_email(data.get('reportedByEmail', '')):
             raise ValueError("Invalid email format")
 
         data['id'] = str(uuid.uuid4())
@@ -139,7 +121,7 @@ class ProblemsRepository(BaseRepository):
     # If a field is not provided in the data, it retains its current value in the database.
     # If the problem does not exist, returns None.
     def update_problem(self, id: str, data: dict):
-        if 'reportedByEmail' in data and not self.is_valid_email(data.get('reportedByEmail', '')):
+        if 'reportedByEmail' in data and not self.__is_valid_email(data.get('reportedByEmail', '')):
             raise ValueError("Invalid email format")
 
         problem_in_db = self.get_problem_by_id(id)
@@ -182,7 +164,9 @@ class ProblemsRepository(BaseRepository):
     def problem_exists(self, id: str):
         return self.sql_get_one(f'SELECT id FROM problems WHERE id = "{id}"') is not None
 
-    def is_valid_email(self, email: str):
+    # Validates the format of an email address using a regular expression.
+    # Returns True if the email is valid or empty, otherwise False.
+    def __is_valid_email(self, email: str):
         if email is None or email == '':
             return True
 
