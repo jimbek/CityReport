@@ -52,7 +52,7 @@ with st.form("edit_form"):
 
     # Pre-select the current state in the dropdown.
     state_id = st.selectbox(
-        "Κατάτασταση",
+        "Κατάσταση",
         index = next(i for i, state in enumerate(all_states) if state['id'] == problem['state']['id']),
         options = list(state['id'] for state in all_states), format_func = lambda x: get_state_label(x))
     
