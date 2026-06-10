@@ -47,13 +47,13 @@ def show_statistics(stateId: str):
 
     df = pd.DataFrame(
         {
-            "Κατηγορία": categories,
+            "Κατάσταση": categories,
             "Προβλήματα": problems,
         }
     )
 
     global container
-    container.bar_chart(df, x = "Κατηγορία", y = "Προβλήματα", x_label = "Κατηγορία", y_label = "Προβλήματα")
+    container.bar_chart(df, x = "Κατάσταση", y = "Προβλήματα", x_label = "Κατάσταση", y_label = "Προβλήματα")
 
 with st.sidebar:
     st.subheader("Επιλογές")
@@ -62,6 +62,6 @@ with st.sidebar:
     def get_state_label(state_id):
         return next(state['label'] for state in all_states if state['id'] == state_id)
 
-    selected_state_id = st.selectbox("Κατάτασταση:", options = list(state['id'] for state in all_states), format_func = lambda x: get_state_label(x))
+    selected_state_id = st.selectbox("Κατάσταση:", options = list(state['id'] for state in all_states), format_func = lambda x: get_state_label(x))
 
     show_statistics(selected_state_id)
