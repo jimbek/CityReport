@@ -40,13 +40,13 @@ def show_statistics(categoryId: str):
 
     df = pd.DataFrame(
         {
-            "Κατάσταση": states,
+            "Κατηγορία": states,
             "Προβλήματα": problems,
         }
     )
 
     global container
-    container.bar_chart(df, x = "Κατάσταση", y = "Προβλήματα", x_label = "Κατάσταση", y_label = "Προβλήματα")
+    container.bar_chart(df, x = "Κατηγορία", y = "Προβλήματα", x_label = "Κατηγορία", y_label = "Προβλήματα")
 
 with st.sidebar:
     st.subheader("Επιλογές")
