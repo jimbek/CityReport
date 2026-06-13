@@ -7,6 +7,13 @@ class BaseRepository:
         # The filename of the database.
         self.db = 'database.db'
     
+    # Checks if the given table exists in the database.
+    def table_exists(self, table_name: str):
+        command = f"SELECT name FROM sqlite_master WHERE type='table' AND name='{table_name}'"
+        data = self.sql_get_one(command)
+
+        return data is not None
+
     # Executes the given SQL command to the database.
     # This is used to apply migrations to the database in order to automatically create the schema.
     def apply_migrations(self, command: str):

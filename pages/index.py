@@ -30,7 +30,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# Function to display problems based on selected state, category, search text, and sorting option.
+# Function to display problems based on selected state, category, and sorting option.
 def format_date(date_text: str):
     if date_text is None:
         return ""
@@ -38,10 +38,10 @@ def format_date(date_text: str):
     return date_text.replace("T", " ")[:16]
 
 
-def show_problems(stateId: str, categoryId: str, sortBy: str, searchText: str):
+def show_problems(stateId: str, categoryId: str, sortBy: str):
     global container
     
-    problems = problems_repo.get_all_problems(categoryId, stateId, sortBy, searchText)
+    problems = problems_repo.get_all_problems(categoryId, stateId, sortBy)
 
     if not problems:
         container.write("Δεν βρέθηκαν προβλήματα με τα επιλεγμένα κριτήρια.")
@@ -83,9 +83,6 @@ def show_problems(stateId: str, categoryId: str, sortBy: str, searchText: str):
 with st.sidebar:
     st.subheader("Επιλογές")
 
-    def clear_search():
-        st.session_state["problem_search_text"] = ""
-
     # Helper function to get the label for a given state ID.
     def get_state_label(state_id):
         return next(state['label'] for state in all_states if state['id'] == state_id)
@@ -93,14 +90,6 @@ with st.sidebar:
     # Helper function to get the label for a given category ID.
     def get_category_label(category_id):
         return next(category['label'] for category in all_categories if category['id'] == category_id)
-
-    # Display text search, dropdown filters, and sorting controls.
-    search_text = st.text_input(
-        "Αναζήτηση:",
-        placeholder = "Γράψτε λέξη από τίτλο ή περιγραφή",
-        key = "problem_search_text")
-
-    st.button("Καθαρισμός αναζήτησης", on_click = clear_search)
 
     state_id = st.selectbox(
         "Κατάσταση:",
@@ -120,4 +109,4 @@ with st.sidebar:
 
     sort_label = st.selectbox("Ταξινόμηση:", options = list(sort_options.keys()))
 
-    show_problems(state_id, category_id, sort_options[sort_label], search_text)
+    show_problems(state_id, category_id, sort_options[sort_label])
